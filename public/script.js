@@ -1,33 +1,55 @@
-async function loadProjects(){
+async function loadProjects() {
+  const container = document.getElementById("projectContainer");
 
-const response = await fetch("/api/projects");
+  if (!container) {
+    console.warn('Element with id "projectContainer" not found.');
+    return;
+  }
 
-const projects = await response.json();
+  container.innerHTML = "";
 
-const container = document.getElementById("projectContainer");
+  try {
+    const response = await fetch("/api/projects");
 
-projects.forEach(project => {
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
 
-const div = document.createElement("div");
+    const projects = await response.json();
 
-div.className = "project";
+    if (!projects.length) {
+      container.textContent = "No matching GitHub projects found.";
+      return;
+    }
 
-div.innerHTML = `
+    projects.forEach((project) => {
+      const div = document.createElement("div");
 
-<h3>${project.title}</h3>
+      div.className = "project";
 
-<p>${project.description}</p>
+      div.innerHTML = `
+        <h3>${project.title}</h3>
+        <div class="project-actions">
+          <a
+            href="${project.github}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-sm btn-project"
+          >
+            View Project
+          </a>
+        </div>
+      `;
 
-<p><b>Tech:</b> ${project.tech}</p>
-
-<a href="${project.github}" target="_blank">View Project</a>
-
-`;
-
-container.appendChild(div);
-
-});
-
+      container.appendChild(div);
+    });
+  } catch (error) {
+    console.error("Failed to load projects:", error);
+    container.textContent =
+      "Failed to load projects. Please try again later.";
+  }
 }
 
-loadProjects();
+document.addEventListener("DOMContentLoaded", () => {
+  loadProjects();
+});

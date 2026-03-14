@@ -2,144 +2,127 @@
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usha Uppara | Portfolio</title>
 
-<title>Usha Uppara Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 
-<link rel="stylesheet" href="style.css">
-
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <h2 class="logo">Usha Uppara</h2>
 
-<!-- NAVBAR -->
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#connect">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
 
-<nav class="navbar">
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="hero-label">Full Stack Developer</p>
+        <h1>Hi, I'm <span>Usha Uppara</span></h1>
+        <p class="hero-subtitle">
+          I build clean, modern web applications using
+          <strong>JavaScript</strong>, <strong>Node.js</strong>, and
+          <strong>MongoDB</strong>.
+        </p>
 
-<h2 class="logo">Usha Portfolio</h2>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          <a href="#connect" class="btn btn-outline">Let’s Connect</a>
+        </div>
+      </div>
 
-<ul class="nav-links">
+      <div class="hero-photo">
+        <div class="hero-avatar">
+          <span>U</span>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<li><a href="#about">About</a></li>
-<li><a href="#skills">Skills</a></li>
-<li><a href="#projects">Projects</a></li>
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About Me</h2>
+    <p>
+      I am an aspiring full stack developer passionate about building
+      responsive, user-friendly web applications. I enjoy turning ideas into
+      real products and continuously improving my skills in both frontend and
+      backend development.
+    </p>
+  </section>
 
-</ul>
+  <!-- SKILLS -->
+  <section id="skills">
+    <h2>Skills</h2>
+    <ul>
+      <li>HTML</li>
+      <li>CSS</li>
+      <li>JavaScript</li>
+      <li>Node.js</li>
+      <li>Express.js</li>
+      <li>MongoDB</li>
+      <li>Git</li>
+      <li>REST APIs</li>
+    </ul>
+  </section>
 
-</nav>
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <p class="section-subtitle">
+      These projects are loaded dynamically from my GitHub repositories, each
+      shown as its own project card.
+    </p>
 
+    <div id="projectContainer" class="projects-grid">
+      <!-- Filled by script.js -->
+    </div>
+  </section>
 
-<!-- HERO -->
+  <!-- CONNECT WITH ME -->
+  <section id="connect">
+    <h2>Connect With Me</h2>
+    <p>
+      I’m always open to discussing new opportunities, collaborations, or just
+      talking about web development.
+    </p>
 
-<header class="hero">
+    <a
+      href="https://www.linkedin.com/in/uppara-usharani"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn btn-primary"
+    >
+      Visit My LinkedIn Profile
+    </a>
+  </section>
 
-<h1>Usha Uppara</h1>
+  <!-- FOOTER -->
+  <footer>
+    <p>© <span id="year"></span> Usha Uppara. All rights reserved.</p>
+  </footer>
 
-<p>Aspiring Full Stack Developer</p>
-
-</header>
-
-
-<!-- ABOUT -->
-
-<section id="about">
-
-<h2>About Me</h2>
-
-<p>
-I am an aspiring full stack developer passionate about building web applications
-using HTML, CSS, JavaScript and Node.js.
-</p>
-
-</section>
-
-
-<!-- SKILLS -->
-
-<section id="skills">
-
-<h2>Skills</h2>
-
-<ul>
-
-<li>HTML</li>
-<li>CSS</li>
-<li>JavaScript</li>
-<li>Node.js</li>
-<li>MongoDB</li>
-<li>Git</li>
-
-</ul>
-
-</section>
-
-
-<!-- PROJECTS -->
-
-<section id="projects">
-
-<h2>Projects</h2>
-
-<div class="project">
-
-<h3>Farmer Crop Planning & Advisory Tool</h3>
-
-<p>
-A smart agricultural assistant that helps farmers decide what crops to grow 
-based on soil, season and environmental conditions. The system can detect 
-crop diseases from leaf images and provide recommendations.
-</p>
-
-<p><b>Technologies:</b> HTML, CSS, JavaScript, Node.js, Express.js, MongoDB</p>
-
-</div>
-
-
-<div class="project">
-
-<h3>Personal Portfolio Website</h3>
-
-<p>
-A full-stack personal portfolio website developed to showcase my projects,
-skills, and contact information. The website dynamically displays project
-details using a backend server and database integration.
-</p>
-
-<p>
-<b>Technologies:</b> HTML, CSS, JavaScript, Node.js, Express.js, MongoDB
-</p>
-
-</div>
-
-</section>
-
-
-<!-- FOOTER -->
-
-<footer>
-
-<p>© Usha Uppara</p>
-
-</footer>
-
-
-<!-- CONNECT WITH ME -->
-
-<section id="connect">
-
-<h2>Connect With Me</h2>
-
-<p>
-
-<a href="https://www.linkedin.com/in/uppara-usharani" target="_blank">
-Visit My LinkedIn Profile
-</a>
-
-</p>
-
-</section>
-
+  <script src="script.js"></script>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

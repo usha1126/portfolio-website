@@ -1,71 +1,69 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 
 const app = express();
 
+const PORT = process.env.PORT || 5000;
+const GITHUB_USERNAME = process.env.GITHUB_USERNAME || "usha1126";
+
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://127.0.0.1:27017/portfolioDB")
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+// Routes
+app.get("/api/projects", async (req, res, next) => {
+  try {
+    const allowedNames = new Set([
+      "farmer_advisory_tool",
+      "portfolio-website",
+      "account-creation-form",
+      "plaintext-to-ciphertext-converter",
+    ]);
 
+    const response = await fetch(
+      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=12`
+    );
 
-const ProjectSchema = new mongoose.Schema({
-title: String,
-description: String,
-tech: String,
-github: String
+    if (!response.ok) {
+      throw new Error(
+        `GitHub API error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const repos = await response.json();
+
+    const projects = repos
+      .filter((repo) => allowedNames.has(repo.name))
+      .map((repo) => ({
+        title: repo.name,
+        github: repo.html_url,
+      }));
+
+    res.json(projects);
+  } catch (error) {
+    next(error);
+  }
 });
 
-const Project = mongoose.model("Project", ProjectSchema);
-
-
-/* GET PROJECTS */
-
-app.get("/api/projects", async (req,res)=>{
-
-const projects = await Project.find();
-
-res.json(projects);
-
+// Health check
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 
+// Error handling middleware
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error(err);
 
-/* INSERT DEFAULT PROJECTS */
+  if (res.headersSent) {
+    return;
+  }
 
-app.get("/add-projects", async (req,res)=>{
-
-await Project.deleteMany();
-
-await Project.insertMany([
-
-{
-title:"Farmer Crop Planning & Advisory Tool",
-description:"A smart agricultural assistant that helps farmers choose crops based on soil and season. It also detects plant diseases using leaf images.",
-tech:"Node.js, Express.js, MongoDB, HTML, CSS, JavaScript",
-github:"https://github.com/YOUR-GITHUB-USERNAME/farmer-advisory-tool"
-},
-
-{
-title:"Personal Portfolio Website",
-description:"A responsive full stack portfolio website to showcase projects and skills.",
-tech:"HTML, CSS, JavaScript, Node.js",
-github:"https://github.com/YOUR-GITHUB-USERNAME/portfolio-project"
-}
-
-]);
-
-res.send("Projects Added");
-
+  res.status(500).json({ message: "Internal server error" });
 });
 
-
-app.listen(3000, ()=>{
-
-console.log("Server running on port 5000");
-
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
