@@ -4,7 +4,7 @@ const path = require("path");
 
 const app = express();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 const GITHUB_USERNAME = process.env.GITHUB_USERNAME || "usha1126";
 
 // Middleware
@@ -15,7 +15,11 @@ app.use(express.static(path.join(__dirname, "public")));
 // Routes
 app.get("/api/projects", async (req, res, next) => {
   try {
+    // Allowlist of repositories to show as project cards.
+    // Include the previous farmer advisory repo name so we can
+    // safely remap it to the new AgroTecX project details.
     const allowedNames = new Set([
+      "Agrotecx",
       "farmer_advisory_tool",
       "portfolio-website",
       "account-creation-form",
@@ -36,10 +40,22 @@ app.get("/api/projects", async (req, res, next) => {
 
     const projects = repos
       .filter((repo) => allowedNames.has(repo.name))
-      .map((repo) => ({
-        title: repo.name,
-        github: repo.html_url,
-      }));
+      .map((repo) => {
+        // Remap the old farmer advisory tool entry to the new AgroTecX
+        // title and GitHub link so it shows correctly in the projects
+        // section even if the underlying repo name hasn't been renamed yet.
+        if (repo.name === "farmer_advisory_tool" || repo.name === "Agrotecx") {
+          return {
+            title: "AgroTecX — Farmer Advisory Tool",
+            github: "https://github.com/usha1126/Agrotecx",
+          };
+        }
+
+        return {
+          title: repo.name,
+          github: repo.html_url,
+        };
+      });
 
     res.json(projects);
   } catch (error) {
